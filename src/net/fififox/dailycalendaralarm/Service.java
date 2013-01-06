@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -15,7 +14,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
-import android.os.Build;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.util.Log;
@@ -35,6 +33,11 @@ public class Service extends IntentService {
      * The request code used to schedule alarms {@link PendingIntent}s in the {@link AlarmManager}.
      */
     private static final int RUN_RQ = 1;
+
+    /**
+     * The request code used to launch the {@link Notification} and the {@link Alert}.
+     */
+    private static final int ALERT_RQ = 2;
 
     /**
      * The tag under which the service status is logged.
@@ -312,9 +315,7 @@ public class Service extends IntentService {
      *     <li>the default notification vibration pattern;</li>
      *     <li>the highest priority.</li>
      * </ul>
-     * It sets the priority in different ways depending on the {@link Build.VERSION#SDK_INT}.
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @SuppressWarnings("deprecation")
     private void runAlarm() {
 
@@ -328,6 +329,18 @@ public class Service extends IntentService {
         mSettings.setLastAlarmTime(System.currentTimeMillis());
         mSettings.clearNextAlarm();
 
+        Intent intent = new Intent(this, Alert.class);
+        intent.putExtra("title", alarm.getEventTitle());
+        intent.putExtra("time", alarm.getEventTime());
+        intent.putExtra("id", ALERT_RQ);
+
+        PendingIntent pending = PendingIntent.getActivity(
+                this,
+                ALERT_RQ,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(alarm.getEventTitle())
@@ -337,21 +350,14 @@ public class Service extends IntentService {
                         AudioManager.STREAM_ALARM)
                 .setLights(0xFFFFFFFF, 200, 200)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setFullScreenIntent(pending, true);
 
-        Notification notification;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            notification = builder.setPriority(Notification.PRIORITY_MAX).build();
-        } else {
-            notification = builder.getNotification();
-            notification.flags |= Notification.FLAG_HIGH_PRIORITY;
-        }
-
+        Notification notification = builder.getNotification();
         notification.flags |= Notification.FLAG_INSISTENT;
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(RUN_RQ, notification);
+        notificationManager.notify(ALERT_RQ, notification);
 
     }
 

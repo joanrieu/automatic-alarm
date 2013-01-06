@@ -6,5 +6,6 @@
     <string name="on_off">Activate the alarm\u00A0?</string>
     <string name="offset">How long before the meeting\u00A0?</string>
     <string name="update">The calendar is checked every hour so last\u2011minute changes might be skipped.\nAn update can be forced by deactivating and reactivating the alarm.</string>
+    <string name="dismiss">Dismiss</string>
 
 </resources>
