@@ -268,9 +268,8 @@ public class Service extends IntentService {
 
         cursor.close();
 
-        if (alarm == null
-                || (alarm.getEventTime() > now
-                        && alarm.getAlarmTime(mSettings.getOffsetInMillis()) <= mSettings.getLastAlarmTime())) {
+        if (alarm == null || alarm.getEventTime() < now
+                || mSettings.getLastAlarmTime() >= alarm.getAlarmTime(mSettings.getOffsetInMillis())) {
 
             if (alarm != null) {
                 Log.v(LOG_TAG, "But the alarm already rang, checking tomorrow...");
@@ -293,7 +292,7 @@ public class Service extends IntentService {
             cursor.close();
 
             if (alarm != null
-                    && alarm.getAlarmTime(mSettings.getOffsetInMillis()) <= mSettings.getLastAlarmTime()) {
+                    && mSettings.getLastAlarmTime() >= alarm.getAlarmTime(mSettings.getOffsetInMillis())) {
                 Log.v(LOG_TAG, "But the alarm already rang.");
                 alarm = null;
             }
