@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
-        android:id="@+id/Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -15,48 +12,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/padding"
-            android:text="@string/description"
+            android:layout_margin="@dimen/margin"
+            android:text="@string/setup_description"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/OnOffText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/padding"
-            android:text="@string/on_off"
+            android:layout_margin="@dimen/margin"
+            android:text="@string/setup_on_off_question"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Switch
-            android:id="@+id/OnOffToggle"
+            android:id="@+id/setup_on_off_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding" />
+            android:layout_marginBottom="@dimen/margin" />
 
         <TextView
-            android:id="@+id/OffsetTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/padding"
-            android:text="@string/offset"
+            android:layout_margin="@dimen/margin"
+            android:text="@string/setup_offset_question"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <net.fififox.dailycalendaralarm.OffsetSpinner
-            android:id="@+id/OffsetSpinner"
+            android:id="@+id/setup_offset_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding" />
+            android:layout_marginBottom="@dimen/margin" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/padding"
-            android:text="@string/update"
+            android:layout_margin="@dimen/margin"
+            android:text="@string/setup_update_notice"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>

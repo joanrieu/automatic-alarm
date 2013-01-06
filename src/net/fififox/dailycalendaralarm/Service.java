@@ -35,7 +35,7 @@ public class Service extends IntentService {
     private static final int RUN_RQ = 1;
 
     /**
-     * The request code used to launch the {@link Notification} and the {@link Alert}.
+     * The request code used to launch the {@link Notification} and the {@link AlarmActivity}.
      */
     private static final int ALERT_RQ = 2;
 
@@ -52,7 +52,7 @@ public class Service extends IntentService {
     private static final long SEARCH_INTERVAL = AlarmManager.INTERVAL_HOUR;
 
     /**
-     * The preferences shared with the {@link Activity}.
+     * The preferences shared with the {@link SetupActivity}.
      */
     private Settings mSettings;
 
@@ -126,7 +126,7 @@ public class Service extends IntentService {
     }
 
     /**
-     * Analyzes received {@link Intent}s from {@link Activity} and calls the appropriate functions.
+     * Analyzes received {@link Intent}s from {@link SetupActivity} and calls the appropriate functions.
      * @param intent The received {@link Intent}.
      */
     @Override
@@ -329,7 +329,7 @@ public class Service extends IntentService {
         mSettings.setLastAlarmTime(System.currentTimeMillis());
         mSettings.clearNextAlarm();
 
-        Intent intent = new Intent(this, Alert.class);
+        Intent intent = new Intent(this, AlarmActivity.class);
         intent.putExtra("title", alarm.getEventTitle());
         intent.putExtra("time", alarm.getEventTime());
         intent.putExtra("id", ALERT_RQ);

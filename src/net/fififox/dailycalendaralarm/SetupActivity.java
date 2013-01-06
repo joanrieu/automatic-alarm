@@ -1,6 +1,7 @@
 package net.fififox.dailycalendaralarm;
 
 import net.fififox.dailycalendaralarm.OffsetSpinner.OnOffsetSetListener;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CompoundButton;
@@ -10,7 +11,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
  * The main activity of the app, showing an On/Off switch and an offset selector.
  * @author Joan Rieu
  */
-public class Activity extends android.app.Activity implements OnCheckedChangeListener, OnOffsetSetListener {
+public class SetupActivity extends Activity implements OnCheckedChangeListener, OnOffsetSetListener {
 
     /**
      * The preferences shared with the {@link Service}.
@@ -24,7 +25,7 @@ public class Activity extends android.app.Activity implements OnCheckedChangeLis
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.setup);
 
         // Service
 
@@ -33,12 +34,12 @@ public class Activity extends android.app.Activity implements OnCheckedChangeLis
 
         // UI
 
-        CompoundButton toggle = (CompoundButton) findViewById(R.id.OnOffToggle);
+        CompoundButton toggle = (CompoundButton) findViewById(R.id.setup_on_off_toggle);
         toggle.setChecked(mSettings.isEnabled());
         toggle.setOnCheckedChangeListener(this);
 
-        OffsetSpinner spinner = (OffsetSpinner) findViewById(R.id.OffsetSpinner);
-        spinner.setAdapter(new OffsetSpinner.OffsetAdapter(spinner, R.layout.activity_main_spinner));
+        OffsetSpinner spinner = (OffsetSpinner) findViewById(R.id.setup_offset_spinner);
+        spinner.setAdapter(new OffsetSpinner.OffsetAdapter(spinner, R.layout.setup_spinner));
         spinner.setOffset(mSettings.getOffsetInMinutes());
         spinner.setOnOffsetSetListener(this);
 

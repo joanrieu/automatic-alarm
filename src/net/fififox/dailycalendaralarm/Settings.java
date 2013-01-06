@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Provides access to the app's settings, shared by {@link Activity} and {@link Service}.
+ * Provides access to the app's settings, shared by {@link SetupActivity} and {@link Service}.
  * @author Joan Rieu
  */
 public class Settings {

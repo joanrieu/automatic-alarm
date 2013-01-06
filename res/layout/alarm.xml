@@ -10,32 +10,32 @@
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/alarmTitleText"
+        android:id="@+id/alarm_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/padding"
-        android:layout_marginLeft="@dimen/padding"
-        android:layout_marginRight="@dimen/padding"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/alarmTimeText"
+        android:id="@+id/alarm_time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/padding"
-        android:layout_marginRight="@dimen/padding"
-        android:layout_marginBottom="@dimen/padding"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/alarmDismissButton"
+        android:id="@+id/alarm_dismiss_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/padding"
-        android:text="@string/dismiss" />
+        android:layout_margin="@dimen/margin"
+        android:text="@string/alarm_dismiss_action" />
 
     <Space
         android:layout_width="match_parent"

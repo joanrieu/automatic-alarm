@@ -10,7 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class Alert extends Activity implements OnClickListener {
+public class AlarmActivity extends Activity implements OnClickListener {
 
     /**
      * Creates a dialog-styled activity.
@@ -20,16 +20,16 @@ public class Alert extends Activity implements OnClickListener {
 
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.alert);
+        setContentView(R.layout.alarm);
 
-        Button button = (Button) findViewById(R.id.alarmDismissButton);
+        Button button = (Button) findViewById(R.id.alarm_dismiss_button);
         button.setOnClickListener(this);
 
-        TextView titleText = (TextView) findViewById(R.id.alarmTitleText);
+        TextView titleText = (TextView) findViewById(R.id.alarm_title_text);
         titleText.setText(getIntent().getStringExtra("title"));
 
         long time = getIntent().getLongExtra("time", System.currentTimeMillis());
-        TextView timeText = (TextView) findViewById(R.id.alarmTimeText);
+        TextView timeText = (TextView) findViewById(R.id.alarm_time_text);
         timeText.setText(DateUtils.getRelativeTimeSpanString(time));
 
     }

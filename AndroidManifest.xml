@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="net.fififox.dailycalendaralarm.Activity"
+            android:name="net.fififox.dailycalendaralarm.SetupActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
         </activity>
         <service android:name="net.fififox.dailycalendaralarm.Service"></service>
         <activity
-            android:name="net.fififox.dailycalendaralarm.Alert"
+            android:name="net.fififox.dailycalendaralarm.AlarmActivity"
             android:excludeFromRecents="true"
             android:showOnLockScreen="true"
             android:launchMode="singleInstance"
