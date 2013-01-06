@@ -24,6 +24,13 @@
             </intent-filter>
         </activity>
         <service android:name="net.fififox.dailycalendaralarm.Service"></service>
+        <activity
+            android:name="net.fififox.dailycalendaralarm.Alert"
+            android:excludeFromRecents="true"
+            android:showOnLockScreen="true"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
     </application>
 
 </manifest>
