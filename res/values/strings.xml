@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Daily Cal Alarm</string>
+    <string name="description">An alarm each day before your first meeting.</string>
+    <string name="on_off">Activate the alarm\u00A0?</string>
+    <string name="offset">How long before the meeting\u00A0?</string>
+    <string name="update">The calendar is checked every hour so last\u2011minute changes might be skipped.\nAn update can be forced by deactivating and reactivating the alarm.</string>
+
+</resources>
