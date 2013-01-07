@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.fififox.dailycalendaralarm"
-    android:versionCode="3"
-    android:versionName="1.2" >
+    android:versionCode="4"
+    android:versionName="1.3" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -23,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="net.fififox.dailycalendaralarm.Service"></service>
+        <service android:name="net.fififox.dailycalendaralarm.AlarmService"></service>
         <activity
             android:name="net.fififox.dailycalendaralarm.AlarmActivity"
             android:excludeFromRecents="true"
@@ -31,6 +32,11 @@
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
+        <receiver android:name="BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
