@@ -25,6 +25,11 @@ import android.util.Log;
 public class AlarmService extends IntentService {
 
     /**
+     * The id used to create and cancel the alarm {@link Notification}.
+     */
+    public static final int ALARM_NOTIFICATION_ID = 0;
+
+    /**
      * The request code used to schedule event searches {@link PendingIntent}s in the {@link AlarmManager}.
      */
     private static final int SEARCH_RQ = 0;
@@ -35,9 +40,9 @@ public class AlarmService extends IntentService {
     private static final int RUN_RQ = 1;
 
     /**
-     * The request code used to launch the {@link Notification} and the {@link AlarmActivity}.
+     * The request code used to start the {@link AlarmActivity}.
      */
-    private static final int ALERT_RQ = 2;
+    private static final int ALARM_ACTIVITY_RQ = 2;
 
     /**
      * The tag under which the service status is logged.
@@ -331,11 +336,10 @@ public class AlarmService extends IntentService {
         Intent intent = new Intent(this, AlarmActivity.class);
         intent.putExtra("title", alarm.getEventTitle());
         intent.putExtra("time", alarm.getEventTime());
-        intent.putExtra("id", ALERT_RQ);
 
         PendingIntent pending = PendingIntent.getActivity(
                 this,
-                ALERT_RQ,
+                ALARM_ACTIVITY_RQ,
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT
         );
@@ -356,7 +360,7 @@ public class AlarmService extends IntentService {
         notification.flags |= Notification.FLAG_INSISTENT;
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(ALERT_RQ, notification);
+        notificationManager.notify(ALARM_NOTIFICATION_ID, notification);
 
     }
 
