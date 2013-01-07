@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="net.fififox.dailycalendaralarm.Service"></service>
+        <service android:name="net.fififox.dailycalendaralarm.AlarmService"></service>
         <activity
             android:name="net.fififox.dailycalendaralarm.AlarmActivity"
             android:excludeFromRecents="true"

@@ -50,7 +50,7 @@ public class AlarmActivity extends Activity implements OnClickListener {
         super.onDestroy();
         if (isFinishing()) {
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            manager.cancel(getIntent().getIntExtra("id", -1));
+            manager.cancel(AlarmService.ALARM_NOTIFICATION_ID);
         }
     }
 
