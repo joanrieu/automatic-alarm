@@ -14,7 +14,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 public class SetupActivity extends Activity implements OnCheckedChangeListener, OnOffsetSetListener {
 
     /**
-     * The preferences shared with the {@link Service}.
+     * The preferences shared with the {@link AlarmService}.
      */
     private Settings mSettings;
 
@@ -69,7 +69,7 @@ public class SetupActivity extends Activity implements OnCheckedChangeListener, 
      * Triggers a service configuration update by sending an {@link Intent}.
      */
     private void configureService() {
-        Intent intent = new Intent(this, Service.class);
+        Intent intent = new Intent(this, AlarmService.class);
         intent.setAction(Intent.ACTION_CONFIGURATION_CHANGED);
         startService(intent);
     }

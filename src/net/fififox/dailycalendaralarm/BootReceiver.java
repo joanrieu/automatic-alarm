@@ -14,7 +14,7 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (intent.getAction() == Intent.ACTION_BOOT_COMPLETED) {
-            intent = new Intent(context, Service.class);
+            intent = new Intent(context, AlarmService.class);
             intent.setAction(Intent.ACTION_CONFIGURATION_CHANGED);
             context.startService(intent);
         }

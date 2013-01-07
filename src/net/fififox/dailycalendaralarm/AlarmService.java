@@ -22,7 +22,7 @@ import android.util.Log;
  * An service which periodically checks for events in the calendar and rings before the first one each day.
  * @author Joan Rieu
  */
-public class Service extends IntentService {
+public class AlarmService extends IntentService {
 
     /**
      * The request code used to schedule event searches {@link PendingIntent}s in the {@link AlarmManager}.
@@ -121,7 +121,7 @@ public class Service extends IntentService {
     /**
      * Creates and names the worker thread.
      */
-    public Service() {
+    public AlarmService() {
         super("DailyCalendarAlarm");
     }
 
@@ -158,7 +158,7 @@ public class Service extends IntentService {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        Intent searchIntent = new Intent(this, Service.class);
+        Intent searchIntent = new Intent(this, AlarmService.class);
         searchIntent.setAction(Intent.ACTION_SEARCH);
         PendingIntent pendingSearch = PendingIntent.getService(this, SEARCH_RQ, searchIntent, 0);
 
@@ -192,7 +192,7 @@ public class Service extends IntentService {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        Intent runIntent = new Intent(this, Service.class);
+        Intent runIntent = new Intent(this, AlarmService.class);
         runIntent.setAction(Intent.ACTION_RUN);
         PendingIntent pendingRun = PendingIntent.getService(this, RUN_RQ, runIntent, 0);
 
