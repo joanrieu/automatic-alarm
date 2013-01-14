@@ -14,8 +14,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
-import android.provider.CalendarContract;
-import android.provider.CalendarContract.Events;
+import android.provider.CalendarContract.Instances;
 import android.util.Log;
 
 /**
@@ -48,11 +47,6 @@ public class AlarmService extends IntentService {
      * The tag under which the service status is logged.
      */
     private static final String LOG_TAG = "DCA";
-
-    /**
-     * The amount of milliseconds in a day.
-     */
-    private static final long MILLIS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
 
     private static final long SEARCH_INTERVAL = AlarmManager.INTERVAL_HOUR;
 
@@ -248,20 +242,20 @@ public class AlarmService extends IntentService {
 
         Alarm alarm;
 
-        long now = System.currentTimeMillis();
-        long midnightUTC = (now / MILLIS_IN_ONE_DAY) * MILLIS_IN_ONE_DAY;
-        long today = midnightUTC - Calendar.getInstance().getTimeZone().getOffset(midnightUTC);
-        long tomorrow = today + MILLIS_IN_ONE_DAY;
+        Calendar calendar = Calendar.getInstance();
+        final long now = calendar.getTimeInMillis();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        final long today = calendar.getTimeInMillis();
+        calendar.roll(Calendar.DATE, true);
+        final long tomorrow = calendar.getTimeInMillis();
+        calendar.roll(Calendar.DATE, true);
+        final long afterTomorrow = calendar.getTimeInMillis();
 
-        String[] projection = new String[] { Events.TITLE, Events.DTSTART };
-        String selection = Events.DTSTART + " >= ?";
-        selection += " AND " + Events.DTSTART + " < ?";
-        selection += " AND " + Events.ALL_DAY + " < 1";
-        String[] selectionArgs = new String[] { Long.toString(today), Long.toString(tomorrow) };
-        String sortOrder = Events.DTSTART;
-
-        Cursor cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI,
-                projection, selection, selectionArgs, sortOrder);
+        String[] projection = new String[] { Instances.TITLE, Instances.BEGIN };
+        Cursor cursor = Instances.query(getContentResolver(), projection, today, tomorrow);
 
         if (cursor.moveToFirst()) {
             Log.v(LOG_TAG, "Found an event today.");
@@ -280,11 +274,7 @@ public class AlarmService extends IntentService {
                 Log.v(LOG_TAG, "But the alarm already rang, checking tomorrow...");
             }
 
-            selectionArgs[0] = selectionArgs[1];
-            selectionArgs[1] = Long.toString(tomorrow + MILLIS_IN_ONE_DAY);
-
-            cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI,
-                    projection, selection, selectionArgs, sortOrder);
+            cursor = Instances.query(getContentResolver(), projection, tomorrow, afterTomorrow);
 
             if (cursor.moveToFirst()) {
                 Log.v(LOG_TAG, "Found an event tomorrow.");
