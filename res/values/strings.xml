@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Daily Cal Alarm</string>
+    <string name="app_name">Automatic Alarm</string>
     <string name="setup_description">An alarm each day before your first meeting.</string>
     <string name="setup_on_off_question">Activate the alarm\u00A0?</string>
     <string name="setup_offset_question">How long before the meeting\u00A0?</string>
