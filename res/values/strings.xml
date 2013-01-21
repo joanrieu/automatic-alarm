@@ -2,10 +2,10 @@
 <resources>
 
     <string name="app_name">Automatic Alarm</string>
-    <string name="setup_description">An alarm each day before your first meeting.</string>
+    <string name="setup_description">An alarm each day before your first event.</string>
     <string name="setup_on_off_question">Activate the alarm\u00A0?</string>
     <string name="setup_offset_question">How long before the meeting\u00A0?</string>
-    <string name="setup_update_notice">The calendar is checked every hour so last\u2011minute changes might be skipped.\nAn update can be forced by deactivating and reactivating the alarm.</string>
+    <string name="setup_update_notice">The calendar is checked every hour, therefore last\u2011minute changes might be skipped.\nAn update can be forced by deactivating and reactivating the alarm.</string>
     <string name="alarm_dismiss_action">Dismiss</string>
 
 </resources>
