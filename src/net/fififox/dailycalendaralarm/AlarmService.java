@@ -1,9 +1,6 @@
 package net.fififox.dailycalendaralarm;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -15,7 +12,6 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.provider.CalendarContract.Instances;
-import android.util.Log;
 
 /**
  * An service which periodically checks for events in the calendar and rings before the first one each day.
@@ -29,12 +25,12 @@ public class AlarmService extends IntentService {
     public static final int ALARM_NOTIFICATION_ID = 0;
 
     /**
-     * The request code used to schedule event searches {@link PendingIntent}s in the {@link AlarmManager}.
+     * The request code used to schedule search {@link Intent}s in the {@link AlarmManager}.
      */
     private static final int SEARCH_RQ = 0;
 
     /**
-     * The request code used to schedule alarms {@link PendingIntent}s in the {@link AlarmManager}.
+     * The request code used to schedule alarm {@link Intent}s in the {@link AlarmManager}.
      */
     private static final int RUN_RQ = 1;
 
@@ -44,10 +40,8 @@ public class AlarmService extends IntentService {
     private static final int ALARM_ACTIVITY_RQ = 2;
 
     /**
-     * The tag under which the service status is logged.
+     * The time interval between search {@link Intent}s in the {@link AlarmManager}.
      */
-    private static final String LOG_TAG = "DCA";
-
     private static final long SEARCH_INTERVAL = AlarmManager.INTERVAL_HOUR;
 
     /**
@@ -78,7 +72,6 @@ public class AlarmService extends IntentService {
         public Alarm(String eventTitle, long eventTime) {
             mEventTitle = eventTitle;
             mEventTime = eventTime;
-            log();
         }
 
         /**
@@ -106,22 +99,13 @@ public class AlarmService extends IntentService {
             return mEventTime - offset;
         }
 
-        /**
-         * Logs this event's title, date and time.
-         */
-        private void log() {
-            DateFormat format = SimpleDateFormat.getDateTimeInstance();
-            String date = format.format(new Date(getEventTime()));
-            Log.v(LOG_TAG, "Event `" + getEventTitle() + "' at " + date + ".");
-        }
-
     }
 
     /**
      * Creates and names the worker thread.
      */
     public AlarmService() {
-        super("DailyCalendarAlarm");
+        super(AlarmService.class.getName());
     }
 
     /**
@@ -140,8 +124,6 @@ public class AlarmService extends IntentService {
             updateNextAlarm();
         } else if (intent.getAction() == Intent.ACTION_SEARCH) {
             updateNextAlarm();
-        } else {
-            Log.w(LOG_TAG, "Service received unknown intent with action " + intent.getAction() + ".");
         }
 
         mSettings = null;
@@ -153,8 +135,6 @@ public class AlarmService extends IntentService {
      */
     private void updateSearchSchedule() {
 
-        Log.v(LOG_TAG, "Updating search schedule...");
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         Intent searchIntent = new Intent(this, AlarmService.class);
@@ -163,7 +143,7 @@ public class AlarmService extends IntentService {
 
         if (mSettings.isEnabled()) {
 
-            Log.v(LOG_TAG, "Search ON.");
+            // Search ON.
 
             alarmManager.setInexactRepeating(
                     AlarmManager.RTC_WAKEUP,
@@ -174,7 +154,7 @@ public class AlarmService extends IntentService {
 
         } else {
 
-            Log.v(LOG_TAG, "Search OFF.");
+            // Search OFF.
 
             alarmManager.cancel(pendingSearch);
             updateNextAlarm();
@@ -186,8 +166,6 @@ public class AlarmService extends IntentService {
      * Sets up an alarm if a calendar event is found matching the app's requirements.
      */
     private void updateNextAlarm() {
-
-        Log.v(LOG_TAG, "Updating next alarm...");
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -201,7 +179,7 @@ public class AlarmService extends IntentService {
 
             if (alarm != null) {
 
-                Log.v(LOG_TAG, "Alarm ON " + mSettings.getOffsetInMinutes() + " minutes before.");
+                // Alarm ON.
 
                 long time = alarm.getAlarmTime(mSettings.getOffsetInMillis());
                 alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingRun);
@@ -211,7 +189,7 @@ public class AlarmService extends IntentService {
 
             } else {
 
-                Log.v(LOG_TAG, "Alarm OFF (no event).");
+                // Alarm OFF (no event).
 
                 alarmManager.cancel(pendingRun);
                 mSettings.clearNextAlarm();
@@ -220,7 +198,7 @@ public class AlarmService extends IntentService {
 
         } else {
 
-            Log.v(LOG_TAG, "Alarm OFF (disabled).");
+            // Alarm OFF (disabled).
 
             alarmManager.cancel(pendingRun);
             mSettings.clearNextAlarm();
@@ -258,29 +236,28 @@ public class AlarmService extends IntentService {
         Cursor cursor = Instances.query(getContentResolver(), projection, today, tomorrow);
 
         if (cursor.moveToFirst()) {
-            Log.v(LOG_TAG, "Found an event today.");
+            // Found an event today.
             alarm = new Alarm(cursor.getString(0), cursor.getLong(1));
         } else {
-            Log.v(LOG_TAG, "No event in calendar for today, checking tomorrow...");
+            // No event in calendar for today.
             alarm = null;
         }
 
         cursor.close();
 
-        if (alarm == null || alarm.getEventTime() < now
+        if (alarm == null
+                || alarm.getEventTime() < now
                 || mSettings.getLastAlarmTime() >= alarm.getAlarmTime(mSettings.getOffsetInMillis())) {
 
-            if (alarm != null) {
-                Log.v(LOG_TAG, "But the alarm already rang, checking tomorrow...");
-            }
+            // Checking tomorrow (no event || we're past the event || the alarm already rang).
 
             cursor = Instances.query(getContentResolver(), projection, tomorrow, afterTomorrow);
 
             if (cursor.moveToFirst()) {
-                Log.v(LOG_TAG, "Found an event tomorrow.");
+                // Found an event tomorrow.
                 alarm = new Alarm(cursor.getString(0), cursor.getLong(1));
             } else {
-                Log.v(LOG_TAG, "No event found tomorrow.");
+                // No event found tomorrow.
                 alarm = null;
             }
 
@@ -288,7 +265,7 @@ public class AlarmService extends IntentService {
 
             if (alarm != null
                     && mSettings.getLastAlarmTime() >= alarm.getAlarmTime(mSettings.getOffsetInMillis())) {
-                Log.v(LOG_TAG, "But the alarm already rang.");
+                // The alarm already rang.
                 alarm = null;
             }
 
@@ -312,8 +289,6 @@ public class AlarmService extends IntentService {
      */
     @SuppressWarnings("deprecation")
     private void runAlarm() {
-
-        Log.v(LOG_TAG, "ALARM!");
 
         Alarm alarm = new Alarm(
                 mSettings.getNextAlarmTitle(),
