@@ -25,12 +25,12 @@ public class AlarmService extends IntentService {
     public static final int ALARM_NOTIFICATION_ID = 0;
 
     /**
-     * The request code used to schedule event searches {@link PendingIntent}s in the {@link AlarmManager}.
+     * The request code used to schedule search {@link Intent}s in the {@link AlarmManager}.
      */
     private static final int SEARCH_RQ = 0;
 
     /**
-     * The request code used to schedule alarms {@link PendingIntent}s in the {@link AlarmManager}.
+     * The request code used to schedule alarm {@link Intent}s in the {@link AlarmManager}.
      */
     private static final int RUN_RQ = 1;
 
@@ -39,6 +39,9 @@ public class AlarmService extends IntentService {
      */
     private static final int ALARM_ACTIVITY_RQ = 2;
 
+    /**
+     * The time interval between search {@link Intent}s in the {@link AlarmManager}.
+     */
     private static final long SEARCH_INTERVAL = AlarmManager.INTERVAL_HOUR;
 
     /**
