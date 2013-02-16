@@ -7,10 +7,12 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.provider.CalendarContract.Instances;
 
 /**
@@ -232,8 +234,13 @@ public class AlarmService extends IntentService {
         calendar.roll(Calendar.DATE, true);
         final long afterTomorrow = calendar.getTimeInMillis();
 
-        String[] projection = new String[] { Instances.TITLE, Instances.BEGIN };
-        Cursor cursor = Instances.query(getContentResolver(), projection, today, tomorrow);
+        final String[] projection = new String[] { Instances.TITLE, Instances.BEGIN };
+        final String selection = Instances.ALL_DAY + " = 0 AND " + Instances.AVAILABILITY + " != " + Instances.AVAILABILITY_FREE;
+
+        Uri.Builder builder = Instances.CONTENT_URI.buildUpon();
+        ContentUris.appendId(builder, today);
+        ContentUris.appendId(builder, tomorrow);
+        Cursor cursor = getContentResolver().query(builder.build(), projection, selection, null, null);
 
         if (cursor.moveToFirst()) {
             // Found an event today.
@@ -251,7 +258,10 @@ public class AlarmService extends IntentService {
 
             // Checking tomorrow (no event || we're past the event || the alarm already rang).
 
-            cursor = Instances.query(getContentResolver(), projection, tomorrow, afterTomorrow);
+            builder = Instances.CONTENT_URI.buildUpon();
+            ContentUris.appendId(builder, tomorrow);
+            ContentUris.appendId(builder, afterTomorrow);
+            cursor = getContentResolver().query(builder.build(), projection, selection, null, null);
 
             if (cursor.moveToFirst()) {
                 // Found an event tomorrow.
